@@ -1,5 +1,4 @@
 apply plugin: "com.android.application"
-apply from: 'https://raw.githubusercontent.com/passsy/gradle-GitVersioner/master/git-versioner.gradle'
 
 android {
     compileSdkVersion compileSdk
@@ -10,16 +9,14 @@ android {
         minSdkVersion minSdk
         targetSdkVersion targetSdk
 
-        versionCode gitVersion.version // will change after every commit
-//        versionCode majorAppVersion * 10000 + minorAppVersion * 1000 + patchAppVersion * 100 + buildAppVersion
-//        versionName "${majorAppVersion}.${minorAppVersion}.${patchAppVersion}"
+        versionCode majorAppVersion * 10000 + minorAppVersion * 1000 + patchAppVersion * 100 + buildAppVersion
+        versionName "${majorAppVersion}.${minorAppVersion}.${patchAppVersion}"
 
         applicationVariants.all { variant ->
             variant.outputs.all { output ->
-//                outputFileName = "myapp-${variant.versionName}-${variant.name}.apk"
+                outputFileName = "myapp-${variant.versionName}-${variant.name}.apk"
             }
         }
-        buildConfigField 'String', 'REVISION', "\"$gitVersionName\""
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

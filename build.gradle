@@ -10,7 +10,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0-alpha03'
-        classpath 'com.pascalwelsch.gitversioner:gitversioner:0.4.1'
     }
 }
 
