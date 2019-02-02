@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply from: 'https://raw.githubusercontent.com/passsy/gradle-GitVersioner/master/git-versioner.gradle'
 
 android {
     compileSdkVersion compileSdk
@@ -9,8 +10,16 @@ android {
         minSdkVersion minSdk
         targetSdkVersion targetSdk
 
-        versionCode majorAppVersion * 10000 + minorAppVersion * 1000 + patchAppVersion * 100 + buildAppVersion
-        versionName "${majorAppVersion}.${minorAppVersion}.${patchAppVersion}"
+        versionCode gitVersion.version // will change after every commit
+//        versionCode majorAppVersion * 10000 + minorAppVersion * 1000 + patchAppVersion * 100 + buildAppVersion
+//        versionName "${majorAppVersion}.${minorAppVersion}.${patchAppVersion}"
+
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+//                outputFileName = "myapp-${variant.versionName}-${variant.name}.apk"
+            }
+        }
+        buildConfigField 'String', 'REVISION', "\"$gitVersionName\""
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -24,6 +33,10 @@ android {
             pseudoLocalesEnabled false
             zipAlignEnabled true
             applicationIdSuffix ".debug"
+
+            versionNameSuffix ".debug"
+//            resValue "string", "app_version",
+//                    "${defaultConfig.versionName}${versionNameSuffix}"
         }
 
         release {
@@ -34,6 +47,9 @@ android {
             pseudoLocalesEnabled false
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+
+/*            resValue "string", "app_version",
+                    "${defaultConfig.versionName}"*/
         }
     }
 
@@ -65,6 +81,6 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
-    compile "com.android.support:cardview-v7:${supportLibraryVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibraryVersion}"
+    implementation "com.android.support:cardview-v7:${supportLibraryVersion}"
 }
